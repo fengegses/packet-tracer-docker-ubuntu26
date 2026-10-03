@@ -1,43 +1,80 @@
-# Cisco Packet Tracer in docker
+# Packet Tracer 9.0.0 Docker Environment (Ubuntu 26.04+)
 
-This repository provides a Docker container for running Cisco's [Packet Tracer](https://learningnetwork.cisco.com/s/packet-tracer-alternative-lab-solutions). After downloading the Packet Tracer tarball, the program is installed within the Docker container, which uses the host's X server to render the GUI.
+[![中文](https://img.shields.io/badge/中文-README_zh_CN-blue)](README_zh_CN.md)
 
-## Prerequisite:
+A ready-to-use Docker environment for running Cisco Packet Tracer 9.0.0 on modern Linux distributions (tested on Ubuntu 26.04).  
+It solves common issues such as FUSE incompatibility, missing Qt/OpenGL libraries, Chromium sandbox restrictions, and permission errors.
 
-Ensure that Docker and Docker Compose are installed and set up.
+---
 
-## Instructions:
+## Table of Contents
+
+- [Background](#background)
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Credits](#credits)
+- [License](#license)
+
+---
+
+## Background
+
+Cisco Packet Tracer 9.0.0 is built with Qt6 and requires glibc 2.34+.  
+On modern Linux distributions like Ubuntu 26.04, running the official `.deb` or AppImage directly often fails due to:
+
+- FUSE version mismatch (AppImage cannot mount)
+- Qt platform plugin (`xcb`) initialization failure
+- Chromium sandbox restrictions (cannot run as root)
+- Missing OpenGL / EGL / xcb dependencies
+- Permission issues with `.local` directories
+
+This repository provides a **Dockerized environment** that solves all these problems, allowing you to run Packet Tracer 9.0.0 on Ubuntu 26.04 (and other modern distros) with a single command.
+
+---
+
+## Prerequisites
+
+- Docker Engine (with Compose plugin)
+- A Cisco NetAcad account (to download the `.deb` installer)
+- X11 display server (standard on most Linux desktops)
+
+---
+
+## Quick Start
 
 ### 1. Clone this repository
 
-```shell
-git clone https://github.com/andrecchia/packet-tracer-docker.git && cd packet-tracer-docker
 ```
-
-### 2. Download the packet tracer .deb file
-
-Download the Packet Tracer deb package distributed in Cisco's website:
-
-- Log into Cisco Networking Academy (Skills For All / NetAcad) using your Cisco Account. Register an account if you do not have it.
-- Once in the Networking Academy portal, download the Packet Tracer from https://skillsforall.com/resources/lab-downloads. The downloaded filename should be something like `Packet_Tracer822_amd64_signed.deb`.
-- Place the .deb file in the root of this repository
-
-### 3. Build the image
-
-Execute the following command to build the Docker image. **By running this command, you automatically accept the EULA**:
-
-```shell
-docker compose build
+git clone https://github.com/your-username/packet-tracer-docker-ubuntu26.git
+cd packet-tracer-docker-ubuntu26
 ```
+### 2.Download
+- Download Packet Tracer 9.0.0 .deb
+- Log in to Cisco NetAcad and download
+- CiscoPacketTracer_900_Ubuntu_64bit.deb.Place it in the repository root (the same directory as Dockerfile).
 
-This process will create an image with Packet Tracer installed, including a `cisco` user within the container.
-
-### 4. Run Packet Tracer inside Docker
-
-To run Packet Tracer inside the Docker container, simply execute:
-
-```shell
-docker compose up
+### 3. Build and run
 ```
+xhost +local:docker
+sudo DISPLAY=$DISPLAY docker compose up --build
+```
+- If you are in the docker group, you can omit sudo.
 
-This command will bind the necessary volumes for X to function properly: `/tmp/.X11-unix` and your `.Xauthority` file. It will also bind two volumes where Packet Tracer configurations and files are stored: [Cisco_Packet_Tracer](./Cisco_Packet_Tracer/) and [pt](./pt/) respectively.
+### 4. Login
+- A browser window will open for Cisco OAuth. If it doesn't, manually open the link shown in the terminal.
+
+- After authorization, return to Packet Tracer.
+
+### 5. Save your work
+- Your .pkt files will be saved in ./pt/ on the host.
+
+- Configuration and login state are stored in ./Cisco_Packet_Tracer/.
+
+## Credits
+This project is inspired by andrecchia/packet-tracer-docker.
+We updated it for Packet Tracer 9.0.0, Ubuntu 22.04+ (including 26.04), and added comprehensive fixes for modern systems.
+
+## License
+The Docker configuration files are provided under the MIT License.
+Packet Tracer itself is subject to Cisco's EULA.
+The .deb installer is not included in this repository.
