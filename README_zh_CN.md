@@ -75,7 +75,7 @@ sudo DISPLAY=$DISPLAY docker compose up --build
 
 ## 致谢
 
-本项目受 andrecchia/packet-tracer-docker 启发，并针对 Packet Tracer 9.0.0、Ubuntu 22.04+（含 26.04）进行了更新，补充了大量现代系统的修复方案。
+本项目受 `andrecchia/packet-tracer-docker` 启发，并针对 Packet Tracer 9.0.0、Ubuntu 22.04+（含 26.04）进行了更新，补充了大量现代系统的修复方案。
 
 ## 许可证
 

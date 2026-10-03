@@ -71,7 +71,7 @@ sudo DISPLAY=$DISPLAY docker compose up --build
 - Configuration and login state are stored in ./Cisco_Packet_Tracer/.
 
 ## Credits
-This project is inspired by andrecchia/packet-tracer-docker.
+This project is inspired by `andrecchia/packet-tracer-docker`.
 We updated it for Packet Tracer 9.0.0, Ubuntu 22.04+ (including 26.04), and added comprehensive fixes for modern systems.
 
 ## License
