@@ -1,18 +1,19 @@
-version: "3"
-
 services:
   app:
     image: packet-tracer-docker
     build:
       context: .
       args:
-        DOCKER_USER: ${DOCKER_USER}
+        DOCKER_USER: cisco
     environment:
       - DISPLAY=${DISPLAY}
+      - APPIMAGE_EXTRACT_AND_RUN=1
+      - LIBGL_ALWAYS_SOFTWARE=1
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - ${HOME}/.Xauthority:/home/${DOCKER_USER}/.Xauthority
-      - "${PWD}/Cisco_Packet_Tracer/:/home/${DOCKER_USER}/.local/share/Cisco Packet Tracer"
-      - ${PWD}/pt/:/home/${DOCKER_USER}/pt/
+      - ${HOME}/.Xauthority:/home/cisco/.Xauthority
+      - ./Cisco_Packet_Tracer:/home/cisco/.local/share/Cisco Packet Tracer
+      - ./pt:/home/cisco/pt
     network_mode: host
-
+    stdin_open: true
+    tty: true
